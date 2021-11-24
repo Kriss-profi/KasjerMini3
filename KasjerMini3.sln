@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31729.503
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KasjerMini3", "KasjerMini3\KasjerMini3.csproj", "{453D20BD-7396-4A64-AC20-E868646C45F3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{453D20BD-7396-4A64-AC20-E868646C45F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{453D20BD-7396-4A64-AC20-E868646C45F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{453D20BD-7396-4A64-AC20-E868646C45F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{453D20BD-7396-4A64-AC20-E868646C45F3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A39C20BB-4F16-4099-ADF2-906975AAF4A7}
+	EndGlobalSection
+EndGlobal

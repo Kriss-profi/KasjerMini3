@@ -1,0 +1,21 @@
+﻿<Window x:Class="KasjerMini3.View.Window1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KasjerMini3.View"
+        xmlns:viewmodel="clr-namespace:KasjerMini3.ViewModel" 
+        d:DataContext="{d:DesignInstance Type=viewmodel:Wallet}"
+        mc:Ignorable="d"
+        Title="Window1" Height="200" Width="250">
+    <Window.DataContext>
+        <viewmodel:Wallet/>
+    </Window.DataContext>
+    <Grid>
+        <StackPanel>
+            <TextBlock Text="Wprowadź stan gotówki w systemie" TextAlignment="Center" Margin="5 50 5 20" />
+            <TextBox x:Name="KasaWSystemie" Text="{Binding Path=SystemValue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Margin="50 0 50 0" />
+            <Button x:Name="Save" Content="Zapisz" Margin="60 20 60 20" Click="Save_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
