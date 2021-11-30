@@ -14,7 +14,11 @@
     <Grid>
         <StackPanel>
             <TextBlock Text="Wprowadź stan gotówki w systemie" TextAlignment="Center" Margin="5 50 5 20" />
-            <TextBox x:Name="KasaWSystemie" Text="{Binding Path=SystemValue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Margin="50 0 50 0" />
+            <TextBox x:Name="KasaWSystemie" 
+                     Text="{Binding Path=SystemValue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" 
+                     Margin="50 0 50 0" 
+                     GotKeyboardFocus="TextBox_GotKeyboardFocus"
+                     InputScope="Number"/>
             <Button x:Name="Save" Content="Zapisz" Margin="60 20 60 20" Click="Save_Click"/>
         </StackPanel>
     </Grid>

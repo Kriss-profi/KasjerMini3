@@ -1,17 +1,20 @@
-﻿using System;
+﻿using KasjerMini3.Help;
+using KasjerMini3.Model;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using KasjerMini3.Model;
 
 namespace KasjerMini3.ViewModel
 {
     public class Wallet : INotifyPropertyChanged
     {
+        public Wallet()
+        {
+            walletStorage = new WalletStorage();
+            ZerujCommand = new RelayCommand(a => Zeruj());
+            walletStorage.Load(this);
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -23,7 +26,51 @@ namespace KasjerMini3.ViewModel
         private decimal _valueDifference;
         private string _differenceColor;
         private readonly WalletStorage walletStorage;
+        public List<int> WalletList = new();
+        
 
+        public void ListaIlosci()
+        {
+            WalletList.Add(QuantityNom50000);
+            WalletList.Add(QuantityNom5000);
+            WalletList.Add(QuantityNom500);
+            WalletList.Add(QuantityNom50);
+            WalletList.Add(QuantityNom5);
+            WalletList.Add(QuantityNom20000);
+            WalletList.Add(QuantityNom2000);
+            WalletList.Add(QuantityNom200);
+            WalletList.Add(QuantityNom20);
+            WalletList.Add(QuantityNom2);
+            WalletList.Add(QuantityNom10000);
+            WalletList.Add(QuantityNom1000);
+            WalletList.Add(QuantityNom100);
+            WalletList.Add(QuantityNom10);
+            WalletList.Add(QuantityNom1);
+        }
+        public ICommand ZerujCommand { get; private set; }
+
+        private void Zeruj()
+        {
+            //Double a = 1.0;
+            //double b = 1.2;
+
+
+            QuantityNom1 = 0;
+            QuantityNom10 = 0;
+            QuantityNom100 = 0;
+            QuantityNom1000 = 0;
+            QuantityNom10000 = 0;
+            QuantityNom2 = 0;
+            QuantityNom20 = 0;
+            QuantityNom200 = 0;
+            QuantityNom2000 = 0;
+            QuantityNom20000 = 0;
+            QuantityNom5 = 0;
+            QuantityNom50 = 0;
+            QuantityNom500 = 0;
+            QuantityNom5000 = 0;
+            QuantityNom50000 = 0;
+        }
 
         public decimal SystemValue
         {
@@ -32,6 +79,7 @@ namespace KasjerMini3.ViewModel
             {
                 //var temp = Convert.ToDecimal(Convert.ToString(value).Replace(",","."));
                 _systemValue = value;
+                CalculateWalletValue();
                 OnPropertyChanged();
             }
         }
@@ -52,7 +100,20 @@ namespace KasjerMini3.ViewModel
             set
             {
                 _valueDifference = value;
+                DifferenceColor = DFColor(value);
                 OnPropertyChanged();
+            }
+        }
+
+        private string DFColor(decimal value)
+        {
+            if(value < 0)
+            {
+                return "Brushes.Red";
+            }
+            else
+            {
+                return "Brushes.Navy";
             }
         }
 
@@ -88,12 +149,12 @@ namespace KasjerMini3.ViewModel
             }
             set
             {
-                if (value > 0)
-                {
-                    wallet.Nom50000.Quantity = value;
-                    Calculate50000();
-                    OnPropertyChanged();
-                }
+               
+                wallet.Nom50000.Quantity = value;
+                ValueForMoneyNom50000 = Calculate(wallet.Nom50000);
+                CalculateWalletValue();
+                OnPropertyChanged();
+                
             }
         }
 
@@ -108,12 +169,6 @@ namespace KasjerMini3.ViewModel
                 wallet.Nom50000.ValueForMoney = value;
                 OnPropertyChanged();
             }
-        }
-
-        private void Calculate50000()
-        {
-            ValueForMoneyNom50000 = wallet.Nom50000.Quantity * wallet.Nom50000.FValue;
-            CalculateWalletValue();
         }
 
         #endregion
@@ -135,12 +190,10 @@ namespace KasjerMini3.ViewModel
             }
             set
             {
-                if (value > 0)
-                {
-                    wallet.Nom20000.Quantity = value;
-                    Calculate20000();
-                    OnPropertyChanged();
-                }
+                wallet.Nom20000.Quantity = value;
+                ValueForMoneyNom20000 = Calculate(wallet.Nom20000);
+                CalculateWalletValue();
+                OnPropertyChanged();
             }
         }
 
@@ -155,12 +208,6 @@ namespace KasjerMini3.ViewModel
                 wallet.Nom20000.ValueForMoney = value;
                 OnPropertyChanged();
             }
-        }
-
-        private void Calculate20000()
-        {
-            ValueForMoneyNom20000 = wallet.Nom20000.Quantity * wallet.Nom20000.FValue;
-            CalculateWalletValue();
         }
 
 
@@ -183,12 +230,10 @@ namespace KasjerMini3.ViewModel
             }
             set
             {
-                if (value > 0)
-                {
-                    wallet.Nom10000.Quantity = value;
-                    Calculate10000();
-                    OnPropertyChanged();
-                }
+                wallet.Nom10000.Quantity = value;
+                ValueForMoneyNom10000 = Calculate(wallet.Nom10000);
+                CalculateWalletValue();
+                OnPropertyChanged();
             }
         }
 
@@ -205,11 +250,6 @@ namespace KasjerMini3.ViewModel
             }
         }
 
-        private void Calculate10000()
-        {
-            ValueForMoneyNom10000 = wallet.Nom10000.Quantity * wallet.Nom10000.FValue;
-            CalculateWalletValue();
-        }
 
         #endregion
 
@@ -231,12 +271,10 @@ namespace KasjerMini3.ViewModel
             }
             set
             {
-                if (value > 0)
-                {
-                    wallet.Nom5000.Quantity = value;
-                    Calculate5000();
-                    OnPropertyChanged();
-                }
+                wallet.Nom5000.Quantity = value;
+                ValueForMoneyNom5000 = Calculate(wallet.Nom5000);
+                CalculateWalletValue();
+                OnPropertyChanged();
             }
         }
 
@@ -251,12 +289,6 @@ namespace KasjerMini3.ViewModel
                 wallet.Nom5000.ValueForMoney = value;
                 OnPropertyChanged();
             }
-        }
-
-        private void Calculate5000()
-        {
-            ValueForMoneyNom5000 = wallet.Nom5000.Quantity * wallet.Nom5000.FValue;
-            CalculateWalletValue();
         }
 
         #endregion
@@ -278,12 +310,10 @@ namespace KasjerMini3.ViewModel
             }
             set
             {
-                if (value > 0)
-                {
-                    wallet.Nom2000.Quantity = value;
-                    Calculate2000();
-                    OnPropertyChanged();
-                }
+                wallet.Nom2000.Quantity = value;
+                ValueForMoneyNom2000 = Calculate(wallet.Nom2000);
+                CalculateWalletValue();
+                OnPropertyChanged();
             }
         }
 
@@ -298,12 +328,6 @@ namespace KasjerMini3.ViewModel
                 wallet.Nom2000.ValueForMoney = value;
                 OnPropertyChanged();
             }
-        }
-
-        private void Calculate2000()
-        {
-            ValueForMoneyNom2000 = wallet.Nom2000.Quantity * wallet.Nom2000.FValue;
-            CalculateWalletValue();
         }
 
 
@@ -326,12 +350,10 @@ namespace KasjerMini3.ViewModel
             }
             set
             {
-                if (value > 0)
-                {
-                    wallet.Nom1000.Quantity = value;
-                    Calculate1000();
-                    OnPropertyChanged();
-                }
+                wallet.Nom1000.Quantity = value;
+                ValueForMoneyNom1000 = Calculate(wallet.Nom1000);
+                CalculateWalletValue();
+                OnPropertyChanged();
             }
         }
 
@@ -348,11 +370,6 @@ namespace KasjerMini3.ViewModel
             }
         }
 
-        private void Calculate1000()
-        {
-            ValueForMoneyNom1000 = wallet.Nom1000.Quantity * wallet.Nom1000.FValue;
-            CalculateWalletValue();
-        }
 
         #endregion
 
@@ -374,12 +391,10 @@ namespace KasjerMini3.ViewModel
             }
             set
             {
-                if (value > 0)
-                {
-                    wallet.Nom500.Quantity = value;
-                    Calculate500();
-                    OnPropertyChanged();
-                }
+                wallet.Nom500.Quantity = value;
+                ValueForMoneyNom500 = Calculate(wallet.Nom500);
+                CalculateWalletValue();
+                OnPropertyChanged();
             }
         }
 
@@ -394,12 +409,6 @@ namespace KasjerMini3.ViewModel
                 wallet.Nom500.ValueForMoney = value;
                 OnPropertyChanged();
             }
-        }
-
-        private void Calculate500()
-        {
-            ValueForMoneyNom500 = wallet.Nom500.Quantity * wallet.Nom500.FValue;
-            CalculateWalletValue();
         }
 
         #endregion
@@ -421,12 +430,10 @@ namespace KasjerMini3.ViewModel
             }
             set
             {
-                if (value > 0)
-                {
-                    wallet.Nom200.Quantity = value;
-                    Calculate200();
-                    OnPropertyChanged();
-                }
+                wallet.Nom200.Quantity = value;
+                ValueForMoneyNom200 = Calculate(wallet.Nom200);
+                CalculateWalletValue();
+                OnPropertyChanged();
             }
         }
 
@@ -441,12 +448,6 @@ namespace KasjerMini3.ViewModel
                 wallet.Nom200.ValueForMoney = value;
                 OnPropertyChanged();
             }
-        }
-
-        private void Calculate200()
-        {
-            ValueForMoneyNom200 = wallet.Nom200.Quantity * wallet.Nom200.FValue;
-            CalculateWalletValue();
         }
 
 
@@ -469,12 +470,10 @@ namespace KasjerMini3.ViewModel
             }
             set
             {
-                if (value > 0)
-                {
-                    wallet.Nom100.Quantity = value;
-                    Calculate100();
-                    OnPropertyChanged();
-                }
+                wallet.Nom100.Quantity = value;
+                ValueForMoneyNom100 = Calculate(wallet.Nom100);
+                CalculateWalletValue();
+                OnPropertyChanged();
             }
         }
 
@@ -489,12 +488,6 @@ namespace KasjerMini3.ViewModel
                 wallet.Nom100.ValueForMoney = value;
                 OnPropertyChanged();
             }
-        }
-
-        private void Calculate100()
-        {
-            ValueForMoneyNom100 = wallet.Nom100.Quantity * wallet.Nom100.FValue;
-            CalculateWalletValue();
         }
 
         #endregion
@@ -517,12 +510,10 @@ namespace KasjerMini3.ViewModel
             }
             set
             {
-                if (value > 0)
-                {
-                    wallet.Nom50.Quantity = value;
-                    Calculate50();
-                    OnPropertyChanged();
-                }
+                wallet.Nom50.Quantity = value;
+                ValueForMoneyNom50 = Calculate(wallet.Nom50);
+                CalculateWalletValue();
+                OnPropertyChanged();
             }
         }
 
@@ -537,12 +528,6 @@ namespace KasjerMini3.ViewModel
                 wallet.Nom50.ValueForMoney = value;
                 OnPropertyChanged();
             }
-        }
-
-        private void Calculate50()
-        {
-            ValueForMoneyNom50 = wallet.Nom50.Quantity * wallet.Nom50.FValue;
-            CalculateWalletValue();
         }
 
         #endregion
@@ -564,12 +549,10 @@ namespace KasjerMini3.ViewModel
             }
             set
             {
-                if (value > 0)
-                {
-                    wallet.Nom20.Quantity = value;
-                    Calculate20();
-                    OnPropertyChanged();
-                }
+                wallet.Nom20.Quantity = value;
+                ValueForMoneyNom20 = Calculate(wallet.Nom20);
+                CalculateWalletValue();
+                OnPropertyChanged();
             }
         }
 
@@ -585,13 +568,6 @@ namespace KasjerMini3.ViewModel
                 OnPropertyChanged();
             }
         }
-
-        private void Calculate20()
-        {
-            ValueForMoneyNom20 = wallet.Nom20.Quantity * wallet.Nom20.FValue;
-            CalculateWalletValue();
-        }
-
 
         #endregion
 
@@ -612,12 +588,10 @@ namespace KasjerMini3.ViewModel
             }
             set
             {
-                if (value > 0)
-                {
-                    wallet.Nom10.Quantity = value;
-                    Calculate10();
-                    OnPropertyChanged();
-                }
+                wallet.Nom10.Quantity = value;
+                ValueForMoneyNom10 = Calculate(wallet.Nom10);
+                CalculateWalletValue();
+                OnPropertyChanged();
             }
         }
 
@@ -634,11 +608,6 @@ namespace KasjerMini3.ViewModel
             }
         }
 
-        private void Calculate10()
-        {
-            ValueForMoneyNom10 = wallet.Nom10.Quantity * wallet.Nom10.FValue;
-            CalculateWalletValue();
-        }
 
         #endregion
 
@@ -660,12 +629,10 @@ namespace KasjerMini3.ViewModel
             }
             set
             {
-                if (value > 0)
-                {
-                    wallet.Nom5.Quantity = value;
-                    Calculate5();
-                    OnPropertyChanged();
-                }
+                wallet.Nom5.Quantity = value;
+                ValueForMoneyNom5 = Calculate(wallet.Nom5);
+                CalculateWalletValue();
+                OnPropertyChanged();
             }
         }
 
@@ -680,12 +647,6 @@ namespace KasjerMini3.ViewModel
                 wallet.Nom5.ValueForMoney = value;
                 OnPropertyChanged();
             }
-        }
-
-        private void Calculate5()
-        {
-            ValueForMoneyNom5 = wallet.Nom5.Quantity * wallet.Nom5.FValue;
-            CalculateWalletValue();
         }
 
         #endregion
@@ -707,12 +668,10 @@ namespace KasjerMini3.ViewModel
             }
             set
             {
-                if (value > 0)
-                {
-                    wallet.Nom2.Quantity = value;
-                    Calculate2();
-                    OnPropertyChanged();
-                }
+                wallet.Nom2.Quantity = value;
+                ValueForMoneyNom2 = Calculate(wallet.Nom2);
+                CalculateWalletValue();
+                OnPropertyChanged();
             }
         }
 
@@ -728,13 +687,6 @@ namespace KasjerMini3.ViewModel
                 OnPropertyChanged();
             }
         }
-
-        private void Calculate2()
-        {
-            ValueForMoneyNom2 = wallet.Nom2.Quantity * wallet.Nom2.FValue;
-            CalculateWalletValue();
-        }
-
 
         #endregion
 
@@ -755,12 +707,10 @@ namespace KasjerMini3.ViewModel
             }
             set
             {
-                if (value > 0)
-                {
-                    wallet.Nom1.Quantity = value;
-                    Calculate1();
-                    OnPropertyChanged();
-                }
+                wallet.Nom1.Quantity = value;
+                ValueForMoneyNom1 = Calculate(wallet.Nom1);
+                CalculateWalletValue();
+                OnPropertyChanged();
             }
         }
 
@@ -777,16 +727,13 @@ namespace KasjerMini3.ViewModel
             }
         }
 
-        private void Calculate1()
-        {
-            ValueForMoneyNom1 = wallet.Nom1.Quantity * wallet.Nom1.FValue;
-            CalculateWalletValue();
-        }
-
         #endregion
 
 
-
+        private static decimal Calculate(FaceValue nom)
+        {
+            return nom.Quantity * nom.FValue;
+        }
 
         private void CalculateWalletValue()
         {
@@ -806,7 +753,7 @@ namespace KasjerMini3.ViewModel
                 + ValueForMoneyNom2
                 + ValueForMoneyNom1;
             CalculateValueDifference();
-            //SaveMyWallet();
+            SaveMyWallet();
 
         }
 
@@ -817,7 +764,7 @@ namespace KasjerMini3.ViewModel
 
         internal void SaveMyWallet()
         {
-            //walletStorage.SaveWallet(this);
+            walletStorage.SaveWallet(this);
         }
     }
 }

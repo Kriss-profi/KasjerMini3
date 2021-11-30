@@ -20,15 +20,21 @@ namespace KasjerMini3.View
     /// </summary>
     public partial class Window1 : Window
     {
-        public Window1()
+        public Window1(Wallet dc)
         {
             InitializeComponent();
-            DataContext = new Wallet();
+            DataContext = dc;
+        }
+
+        private void TextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            TextBox tb = sender as TextBox;
+            tb.Dispatcher.BeginInvoke(new Action(() => tb.SelectAll()));
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(KasaWSystemie.Text.ToString());
+            //MessageBox.Show(KasaWSystemie.Text.ToString());
             Close();
         }
     }
