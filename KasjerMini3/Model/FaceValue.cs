@@ -8,17 +8,20 @@ namespace KasjerMini3.Model
 {
     public class FaceValue
     {
-        public FaceValue( int nominal)
+        public FaceValue(int nominal)
         {
             Quantity = 0;
             FValue = Convert.ToDecimal(nominal) / 100;
-            if(FValue >= 1)
+            if (FValue >= 1)
             {
                 Name = Convert.ToString(FValue) + " zł.";
             }
             else
             {
-                Name = Convert.ToString(FValue) + " gr.";
+                //Name = $"{FValue} gr.";  
+                //Name = $"{FValue.ToString()} gr.";  
+                Name = $"{nominal.ToString()} gr.";
+                //Name = Convert.ToString(FValue) + " gr.";
             }
         }
 

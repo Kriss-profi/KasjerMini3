@@ -8,10 +8,10 @@ namespace KasjerMini3.Model
 {
     public class WalletStorage
     {
-        private const string fileName = "KasjerMini3.txt";
+        private const string fileName = @"KasjerMini3.txt";
 
         public List<int> WalletList = new();
-        
+
 
         public void SaveWallet(Wallet wallet)
         {
@@ -26,7 +26,7 @@ namespace KasjerMini3.Model
         {
             try
             {
-                if(File.Exists(fileName))
+                if (File.Exists(fileName))
                 {
                     string[] table = File.ReadAllLines(fileName);
                     wallet.QuantityNom50000 = int.Parse(table[0]);
@@ -54,7 +54,7 @@ namespace KasjerMini3.Model
         }
         private static void SaveList(StreamWriter writer, Wallet wallet)
         {
-            
+
             writer.WriteLine(Convert.ToString(wallet.QuantityNom50000));
             writer.WriteLine(Convert.ToString(wallet.QuantityNom5000));
             writer.WriteLine(Convert.ToString(wallet.QuantityNom500));

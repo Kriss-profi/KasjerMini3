@@ -1,5 +1,6 @@
 ﻿using KasjerMini3.Help;
 using KasjerMini3.Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -17,16 +18,18 @@ namespace KasjerMini3.ViewModel
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         private decimal _systemValue;
         private decimal _walletValue;
-        private decimal _valueDifference;
-        private string _differenceColor;
+        private decimal _differenceValue;
+        private string _testValue;
         private readonly WalletStorage walletStorage;
         public List<int> WalletList = new();
+        IFormatProvider FormatProvider = new System.Globalization.CultureInfo("pl-PL");
         
 
         public void ListaIlosci()
@@ -51,10 +54,6 @@ namespace KasjerMini3.ViewModel
 
         private void Zeruj()
         {
-            //Double a = 1.0;
-            //double b = 1.2;
-
-
             QuantityNom1 = 0;
             QuantityNom10 = 0;
             QuantityNom100 = 0;
@@ -72,13 +71,24 @@ namespace KasjerMini3.ViewModel
             QuantityNom50000 = 0;
         }
 
+        public string TestValue 
+        { 
+            get => _testValue; 
+            set
+            {
+                _testValue = value.Replace(",",".");
+                //_testValue = ToString().Replace(",", ".");
+                OnPropertyChanged();
+            }
+        }
+
         public decimal SystemValue
         {
             get { return _systemValue; }
             set
             {
-                //var temp = Convert.ToDecimal(Convert.ToString(value).Replace(",","."));
-                _systemValue = value;
+                TestValue = value.ToString();
+                _systemValue = Convert.ToDecimal(value, FormatProvider); //.Replace(",",".");
                 CalculateWalletValue();
                 OnPropertyChanged();
             }
@@ -94,35 +104,12 @@ namespace KasjerMini3.ViewModel
             }
         }
 
-        public decimal ValueDifference
+        public decimal DifferenceValue
         {
-            get { return _valueDifference; }
+            get { return _differenceValue; }
             set
             {
-                _valueDifference = value;
-                DifferenceColor = DFColor(value);
-                OnPropertyChanged();
-            }
-        }
-
-        private string DFColor(decimal value)
-        {
-            if(value < 0)
-            {
-                return "Brushes.Red";
-            }
-            else
-            {
-                return "Brushes.Navy";
-            }
-        }
-
-        public string DifferenceColor
-        {
-            get { return _differenceColor; }
-            set
-            {
-                _differenceColor = value;
+                _differenceValue = value;
                 OnPropertyChanged();
             }
         }
@@ -727,6 +714,7 @@ namespace KasjerMini3.ViewModel
             }
         }
 
+
         #endregion
 
 
@@ -759,7 +747,7 @@ namespace KasjerMini3.ViewModel
 
         private void CalculateValueDifference()
         {
-            ValueDifference = WalletValue - SystemValue;
+            DifferenceValue = WalletValue - SystemValue;
         }
 
         internal void SaveMyWallet()

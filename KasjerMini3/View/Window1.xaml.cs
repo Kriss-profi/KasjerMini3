@@ -37,5 +37,15 @@ namespace KasjerMini3.View
             //MessageBox.Show(KasaWSystemie.Text.ToString());
             Close();
         }
+
+        private void KasaWSystemie_PreviewKeyUp(object sender, KeyEventArgs e)
+        {
+
+            
+            if (e.Key == Key.Enter)
+            {
+                Close();
+            }
+        }
     }
 }

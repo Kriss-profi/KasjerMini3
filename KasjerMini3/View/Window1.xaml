@@ -7,7 +7,7 @@
         xmlns:viewmodel="clr-namespace:KasjerMini3.ViewModel" 
         d:DataContext="{d:DesignInstance Type=viewmodel:Wallet}"
         mc:Ignorable="d"
-        Title="Window1" Height="200" Width="250">
+        Title="Stan Kasy" Height="200" Width="250">
     <Window.DataContext>
         <viewmodel:Wallet/>
     </Window.DataContext>
@@ -18,7 +18,8 @@
                      Text="{Binding Path=SystemValue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" 
                      Margin="50 0 50 0" 
                      GotKeyboardFocus="TextBox_GotKeyboardFocus"
-                     InputScope="Number"/>
+                     InputScope="Number"
+                     PreviewKeyUp="KasaWSystemie_PreviewKeyUp" />
             <Button x:Name="Save" Content="Zapisz" Margin="60 20 60 20" Click="Save_Click"/>
         </StackPanel>
     </Grid>

@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:KasjerMini3"
         d:DataContext="{d:DesignInstance Type=modelwidoku:Wallet}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="440" Width="300">
+        Title="KasjerMini V3" Height="450" Width="300"  ResizeMode="CanMinimize">
     <Window.Resources>
         <local:DiferencColorConverter x:Key="dcc" />
         <Style TargetType="TextBlock">
@@ -32,13 +32,15 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="20" />
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" x:Name="bt1" Content="Zeruj" Command="{Binding ZerujCommand}" IsTabStop="False"/>
+                <Button Grid.Column="0" x:Name="bt1" Content="Zeruj" Command="{Binding ZerujCommand}" IsTabStop="False" ToolTip="Zeruje szystkie wprowadzone ilości Nominałów"/>
                 <Button Grid.Column="1" x:Name="bt2" Content="Kwota" Click="bt2_Click"  ToolTip="Wprowadź kwotę do sprawdzenia ze stanem gotówki" IsTabStop="False"/>
-                <Button Grid.Column="2" x:Name="bt4" Content="Drukuj" Background="Azure"  Foreground="Red" TabIndex="15" IsTabStop="True"/>
+                <Button Grid.Column="2" x:Name="bt4" Content="Drukuj" Click="bt4_Click" Background="Azure"  Foreground="Red" TabIndex="15" IsTabStop="True"/>
+                <Button Grid.Column="3" x:Name="bt5" Content="?" ToolTipOpening="bt5_ToolTipOpening" TabIndex="15" IsTabStop="True" Click="bt5_Click"/>
             </Grid>
         </StackPanel>
-        <Grid PreviewKeyDown="Grid_PreviewKeyDown">
+        <Grid x:Name="WalletView" PreviewKeyDown="Grid_PreviewKeyDown">
             <Grid.ColumnDefinitions  >
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="*"/>
@@ -65,17 +67,18 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"  Text="" FontSize="10" />
-            <TextBlock Grid.Column="2" Grid.Row="0" x:Name="KasaSystem" 
-                       Text="{Binding Path=SystemValue, Mode=OneWay, StringFormat={}{0:N2} zł.}" 
+            <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"  Text="{Binding Path=TestValue, Mode=OneWay}" FontSize="10" />
+            <TextBox Grid.Column="2" Grid.Row="0" x:Name="KasaSystem" 
+                     FontSize="18"
+                       Text="{Binding Path=SystemValue, Mode=TwoWay, StringFormat={}{0:N2} zł.}" 
                        Foreground="Navy"/>
             <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" 
-                       FontSize="14"  Margin="10 0 0 0"
+                       FontSize="14" Margin="10 0 0 0"
                        Name="tbSystem" Style="{StaticResource TitleText}" 
-                       Text="{Binding Path=ValueDifference, Mode=TwoWay, StringFormat={}{0:N2} zł.}" 
-                       Foreground="{Binding Path=ValueDifference, Converter={StaticResource dcc}}" />
-            
-            <TextBlock Grid.Column="2" Grid.Row="1" Style="{StaticResource TitleText}" Text="{Binding Path=WalletValue, StringFormat={}{0:N2} zł.}" />
+                       Text="{Binding Path=DifferenceValue, Mode=TwoWay, StringFormat={}{0:N2} zł.}" 
+                       Foreground="{Binding Path=DifferenceValue, Converter={StaticResource dcc}}" />
+
+            <TextBlock Grid.Column="2" Grid.Row="1" Style="{StaticResource TitleText}" Text="{Binding Path=WalletValue, StringFormat={}{0:N2} zł.}" FontWeight="Bold"  />
 
             <TextBlock Grid.Column="0" Grid.Row="3"  Text="{Binding Path=NameNom50000, Mode=OneTime}"  />
             <TextBlock Grid.Column="0" Grid.Row="4"  Text="{Binding Path=NameNom20000, Mode=OneTime}"  />

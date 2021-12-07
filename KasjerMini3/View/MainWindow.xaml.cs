@@ -4,6 +4,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Printing;
 
 namespace KasjerMini3
 {
@@ -35,16 +36,40 @@ namespace KasjerMini3
 
         private void Grid_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Enter)
+            if (e.Key == Key.Enter)
             {
                 TextBox s = e.Source as TextBox;
-                if(s != null)
+                if (s != null)
                 {
                     s.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
                 }
 
                 e.Handled = true;
             }
+        }
+
+        private void bt5_ToolTipOpening(object sender, ToolTipEventArgs e)
+        {
+
+        }
+
+        private void bt5_Click(object sender, RoutedEventArgs e)
+        {
+            // Configure message box
+            string message = "Siema To ja z pozdrowionkami \n Wpadnij na stronę:\n  www.polprofi.de/Kasjer ";
+            string caption = "Info o twórcy";
+            MessageBoxButton buttons = MessageBoxButton.OK;
+            //MessageBoxImage icon = MessageBoxImage.Information;
+            MessageBoxImage icon = MessageBoxImage.Information;
+            MessageBoxResult defaultResult = MessageBoxResult.OK;
+            MessageBoxOptions options = MessageBoxOptions.RightAlign;
+            // Show message box
+            MessageBox.Show(message, caption, buttons, icon, defaultResult, options);
+        }
+
+        private void bt4_Click(object sender, RoutedEventArgs e)
+        {
+            new PrintPage(MyDataContext).ShowDialog();
         }
     }
 }
